@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDatepickerInputEvent } from '@angular/material';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppState, getEspecialidad, getMiembro, getPacient, getCloseDialog, getIsLoading } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
 import { Turno } from 'src/app/interfaces/turno.interface';

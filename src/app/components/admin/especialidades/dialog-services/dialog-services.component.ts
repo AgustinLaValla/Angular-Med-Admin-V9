@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Especialidad } from 'src/app/interfaces/especialidad.interface';
 import { Store } from '@ngrx/store';
 import { AppState, getIsLoading, getEspecialidad } from 'src/app/store/app.reducer';

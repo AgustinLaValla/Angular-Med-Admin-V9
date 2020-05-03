@@ -11,7 +11,7 @@ import { TurnosDialogComponent } from './turnos-dialog/turnos-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { LOCALE_ID } from '@angular/core';
 import localeEsAr from '@angular/common/locales/es-AR';
-import { MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { ScrollableDirective } from '../../../directives/scrollable.directive';
 import { AccordionComponent } from './acordion/accordion.component';

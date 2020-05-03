@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { Pacient } from 'src/app/interfaces/pacient.interface';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';

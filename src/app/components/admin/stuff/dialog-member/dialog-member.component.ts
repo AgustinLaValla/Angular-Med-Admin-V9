@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppState, getEspecialidades, getMiembro } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
 import { Miembro } from 'src/app/interfaces/miembro.interface';

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy, ElementRef, AfterViewChecked, Input } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Turno } from 'src/app/interfaces/turno.interface';
 import { Store } from '@ngrx/store';
 import { AppState, getTurnos, getIsLoading, getId, getCounter, getTurnosCounter, getTurnosConcretadosLength, getTableType, getMiembro, getUnsubsLoading } from 'src/app/store/app.reducer';

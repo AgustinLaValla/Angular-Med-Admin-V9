@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pacient } from 'src/app/interfaces/pacient.interface';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { PacientdataDialogComponent } from './pacientdata-dialog/pacientdata-dialog.component';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';

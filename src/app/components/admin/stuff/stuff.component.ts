@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState, getStuff, getIsLoading } from 'src/app/store/app.reducer';
 import { Miembro } from 'src/app/interfaces/miembro.interface';
 import { deactivateLoading, loadGetStuff, loadDeleteMiembro } from 'src/app/store/actions';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogMemberComponent } from './dialog-member/dialog-member.component';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
