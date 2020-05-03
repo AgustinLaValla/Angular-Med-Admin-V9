@@ -1,0 +1,82 @@
+.container { 
+    margin-left: 5%;
+    min-height: 90vh;
+    margin-top: 70px;
+}
+
+.list-unit { 
+    transition: 0.1s;
+}
+
+.list-unit:hover {
+    color: #6a0080;
+    font-weight: 500;
+    transition: 0.1s;
+}
+
+.add_esp_btn { 
+    top: 20px;
+    margin-left: 1%;
+    background-color: #6a0080;
+    color: white;
+    position: absolute;
+
+}
+
+.spinner-container { 
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (min-width:1050px) { 
+    .mat-list { 
+        width: 500px;
+    }
+    .add_esp_btn {
+        display: block;
+    }
+    .fab_btn {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 1049px) { 
+    .add_esp_btn {
+        display: none;
+    }
+    .fab_btn {
+        display: block;
+        position: absolute;
+        left: 80%;
+        top: 80%;
+    }
+}
+
+@media screen and (max-width: 599px) { 
+    .container {
+        width: 100%;
+    }
+    .add_esp_btn {
+        display: none;
+    }
+    .fab_btn {
+        display: block;
+        position: absolute;
+        left: 80%;
+        top: 80%;
+    }
+}
+
+#alert-card { 
+    text-align: center;
+    background:rgba(233, 30, 99, 0.7);
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 400;
+    padding: 15 0px;
+    font-size: 20px;
+    margin-top: 50px;
+    width: 95%;
+    margin: 50px auto 0 auto;
+}
