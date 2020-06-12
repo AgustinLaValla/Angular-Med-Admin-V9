@@ -1,0 +1,29 @@
+<full-calendar *ngIf="show"
+               #calendar 
+               defaultView="dayGridMonth" 
+               [plugins]="calendarPlugins"
+               [weekends]="false"
+               [locale]="'es'"
+               [header]="{
+                left: 'prev,next',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+              }"
+
+               [slotEventOverlap]=true
+               [slotLabelFormat]="{
+                hour: 'numeric',
+                minute: '2-digit',
+                omitZeroMinute: false,
+                meridiem: 'short'
+              }"
+              [validRange]="{start:getStartRange(), end:getEndRange()}"
+              [minTime]="'08:00:00'"
+              [maxTime]="'21:00:00'"
+              [defaultView]="'timeGridWeek'"
+              [nowIndicator]="true"
+              [slotDuration]="'00:15:00'"
+               [events]="calendarEvents"
+               (eventClick)="openDialog($event)"
+               
+></full-calendar>

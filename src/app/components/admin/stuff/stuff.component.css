@@ -1,5 +1,9 @@
-.container { 
+.main-container {
     height: 90vh;
+    /* overflow: hidden; */
+}
+.container { 
+   
     margin-top: 70px;
     display: grid;
     grid-template-columns: 24% 24% 24% 24%;
@@ -15,7 +19,7 @@
     left: 10px;
     background-color: #6a0080;
     color: white;
-    position: absolute;
+    /* position: absolute; */
 }
 
 .spinner-container { 

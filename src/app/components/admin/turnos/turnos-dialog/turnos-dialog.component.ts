@@ -4,15 +4,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppState, getEspecialidad, getMiembro, getPacient, getCloseDialog, getIsLoading } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
 import { Turno } from 'src/app/interfaces/turno.interface';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 import {  loadResetTurno, loadGetMiembro, loadAddTurno, loadUpdateSingleTurno, loadGetEspecialidadByItsName, 
   loadResetMiembro, loadGetPacientByDNI, loadResetPacientStoreData, loadCloseDialog, deactivateLoading, unsubscribeLoading, subscribeLoading } from 'src/app/store/actions';
 import { Subscription } from 'rxjs';
 import { Especialidad } from 'src/app/interfaces/especialidad.interface';
 import { Miembro } from 'src/app/interfaces/miembro.interface';
-import { take } from 'rxjs/operators';
 import { Pacient } from 'src/app/interfaces/pacient.interface';
 import Swal from 'sweetalert2';
+import { DateAdapter } from '@angular/material/core';
+import '@angular/localize/init';
 
 @Component({
   selector: 'app-turnos-dialog',
@@ -65,13 +66,16 @@ export class TurnosDialogComponent implements OnInit, OnDestroy {
 
   constructor(public dialogRef: MatDialogRef<TurnosDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { action: string, especialistaId: string, turno: Turno, fromPacientTable?: boolean },
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+    private dateAdapter: DateAdapter<any>) {
     this.new_turno.especialistaId = this.data.especialistaId;
     this.store.dispatch(unsubscribeLoading());
     this.initDialog();
+    this.dateAdapter.setLocale('es');
   }
 
   initDialog() {
+    console.log(this.data);
     //SUBSCRIPTIONS
     // this.turnoSubs$ = this.store.select(getSingleTurno).subscribe((turno: Turno) => {
     if (this.data.turno) {
@@ -153,8 +157,8 @@ export class TurnosDialogComponent implements OnInit, OnDestroy {
       fecha_hasta = this.fecha.clone().utc().hour(hastaHour).minutes(hastaMinutes);
 
     } else {
-      fecha_desde = this.fecha.clone().hour(desdeHour).minutes(desdeMinutes);
-      fecha_hasta = this.fecha.clone().hour(hastaHour).minutes(hastaMinutes);
+      fecha_desde = this.fecha.clone().utc().hour(desdeHour).minutes(desdeMinutes);
+      fecha_hasta = this.fecha.clone().utc().hour(hastaHour).minutes(hastaMinutes);
     }
 
     this.new_turno.desde = fecha_desde.toString();
@@ -261,6 +265,7 @@ export class TurnosDialogComponent implements OnInit, OnDestroy {
     this.miemboSubs$.unsubscribe();
     this.pacientSubs$.unsubscribe();
     this.dialogCloseSubs$.unsubscribe();
+    this.loadingSubs$.unsubscribe();
     this.store.dispatch(loadCloseDialog({close:false}));
     this.store.dispatch(subscribeLoading());
     this.store.dispatch(loadResetTurno());

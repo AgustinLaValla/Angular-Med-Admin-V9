@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { Store } from '@ngrx/store';
 import { AppState, getStuff, getIsLoading, getTableType } from 'src/app/store/app.reducer';
 import { Subscription } from 'rxjs';
-import { loadGetStuff, deactivateLoading, loadOpenTable, loadGetEspecialidadByItsName, loadCloseTable, unsubscribeLoading } from 'src/app/store/actions';
+import { loadGetStuff, deactivateLoading, loadOpenTable, loadGetEspecialidadByItsName, loadCloseTable, ShowTurnosData, unsubscribeLoading, HideTurnosData } from 'src/app/store/actions';
 import { Miembro } from 'src/app/interfaces/miembro.interface';
 
 @Component({
@@ -23,15 +23,15 @@ export class EspecialistasListComponent implements OnInit, OnDestroy {
 
   @Input() headerDescription: string;
 
-  constructor(private store:Store<AppState>) {
+  constructor(private store: Store<AppState>) {
     //SUBSCRIPTIONS
-    this.stuffSubs$ = this.store.select(getStuff).subscribe((stuff:Miembro[]) => {
-      this.store.dispatch( deactivateLoading() )
+    this.stuffSubs$ = this.store.select(getStuff).subscribe((stuff: Miembro[]) => {
+      this.store.dispatch(deactivateLoading())
       this.stuff = (stuff) ? stuff : null;
     });
 
-    this.tableTypeSubs$ = this.store.select(getTableType).subscribe((tableType) => { 
-      if(tableType) { 
+    this.tableTypeSubs$ = this.store.select(getTableType).subscribe((tableType) => {
+      if (tableType) {
         this.tableType = tableType;
       };
     });
@@ -39,7 +39,7 @@ export class EspecialistasListComponent implements OnInit, OnDestroy {
     this.getLoadingSubs();
 
     this.store.select(unsubscribeLoading).subscribe(unsubscribe => {
-      if(unsubscribe) {
+      if (unsubscribe) {
         this.loadingSubs$.unsubscribe()
       } else {
         this.getLoadingSubs();
@@ -48,37 +48,36 @@ export class EspecialistasListComponent implements OnInit, OnDestroy {
 
 
     //DISPATCHS
-    this.store.dispatch( loadGetStuff() );
-   }
+    this.store.dispatch(loadGetStuff());
+  }
 
   ngOnInit() {
   }
 
-  showTurnos(especialista:Miembro) { 
+  showTurnos(especialista: Miembro) {
     this.loadingSubs$.unsubscribe();
-    
-    if(this.headerDescription == 'Especialistas') { 
 
-      if(this.tableType == 'Turnos Pasados') { 
-        this.store.dispatch( loadCloseTable() );
+    if (this.headerDescription == 'Especialistas') {
+      this.store.dispatch(ShowTurnosData({ especialistaId: especialista.id }));
+      if (this.tableType === 'Turnos Pasados') {
+        this.store.dispatch(loadCloseTable());
+      };
+
+
+    } else if (this.headerDescription == 'Turnos Pasados') {
+      this.store.dispatch(HideTurnosData());
+      if (this.tableType == 'Especialistas') {
+        this.store.dispatch(loadCloseTable());
       }
-
-      this.store.dispatch( loadOpenTable({especialistaId:especialista.id, tableType:'Especialistas',counter:15}) );
-
-    }else if(this.headerDescription == 'Turnos Pasados') { 
-
-      if(this.tableType == 'Especialistas') { 
-        this.store.dispatch( loadCloseTable() );
-      }
-
-      this.store.dispatch( loadOpenTable({especialistaId:especialista.id, tableType:'Turnos Pasados',counter:15}) );
+      setTimeout(() => {
+        this.store.dispatch(loadOpenTable({ especialistaId: especialista.id, tableType: 'Turnos Pasados', counter: 15 }))
+      }, 50);
     };
-
-    this.store.dispatch( loadGetEspecialidadByItsName({nombreEspeciliadad: especialista.especialidad}) );
+    this.store.dispatch(loadGetEspecialidadByItsName({ nombreEspeciliadad: especialista.especialidad }));
   }
 
-  getLoadingSubs() { 
-    this.loadingSubs$ = this.store.select( getIsLoading ).subscribe((loading:boolean) => this.loading = loading);
+  getLoadingSubs() {
+    this.loadingSubs$ = this.store.select(getIsLoading).subscribe((loading: boolean) => this.loading = loading);
   }
 
   ngOnDestroy(): void {

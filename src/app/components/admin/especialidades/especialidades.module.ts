@@ -6,7 +6,7 @@ import { EspecialidadesComponent } from './especialidades.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { DialogServicesComponent } from './dialog-services/dialog-services.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+
 
 
 @NgModule({
@@ -17,8 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
     MaterialModule,
     FormsModule,
   ],
-  exports: [MaterialModule, FormsModule],
-  entryComponents: [DialogServicesComponent]
+  exports: [MaterialModule, FormsModule]
 
 })
 export class EspecialidadesModule { }

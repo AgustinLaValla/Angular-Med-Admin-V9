@@ -4,6 +4,7 @@ import * as fromUI from './reducers/ui.reducer';
 import * as fromESPECIALIDAD from './reducers/especialidad.reducer';
 import * as fromSTUFF from './reducers/stuff.reducer';
 import * as fromMIEMBRO from './reducers/miembro.reducer';
+import * as fromTURNOS_DATA from './reducers/turnos-data.reducer';
 import * as fromTURNOS from './reducers/turnos.reducer';
 import * as fromTABLE from './reducers/table.reducer';
 import * as fromTURNO from './reducers/turno.reducer';
@@ -15,6 +16,7 @@ import * as fromPACIENT_DATA from './reducers/pacient-data.reducer';
 import * as fromPACIENT from './reducers/paciente.reducer';
 import * as fromAUTH from './reducers/auth.reducer';
 import * as fromDIALOG from './reducers/dialog.reducer';
+import * as fromCALENDAR from './reducers/calendar.reducer';
 
 export interface AppState { 
     ui: fromUI.UI_State,
@@ -23,6 +25,7 @@ export interface AppState {
     stuff: fromSTUFF.StuffState,
     miembro: fromMIEMBRO.MiembroState,
     turnos: fromTURNOS.TurnosState,
+    turnos_data: fromTURNOS_DATA.TurnosDataState,
     table: fromTABLE.TableState,
     turno: fromTURNO.TurnoState,
     total_turnos: fromTURNOS_COUNTER.TurnosCounterState,
@@ -32,7 +35,8 @@ export interface AppState {
     pacient_data: fromPACIENT_DATA.PacientDataState,
     pacient: fromPACIENT.PacientState,
     auth: fromAUTH.AuthState,
-    dialog:fromDIALOG.DialogState
+    dialog:fromDIALOG.DialogState,
+    calendar:fromCALENDAR.CalendarState
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -42,6 +46,7 @@ export const appReducer: ActionReducerMap<AppState> = {
     stuff: fromSTUFF.stuffReducer,
     miembro: fromMIEMBRO.miembroReducer,
     turnos: fromTURNOS.turnosReducer,
+    turnos_data:fromTURNOS_DATA.tableDataReducer,
     table: fromTABLE.tableReducer,
     turno: fromTURNO.turnoReducer,
     total_turnos: fromTURNOS_COUNTER.turnosCounterReducer,
@@ -51,7 +56,8 @@ export const appReducer: ActionReducerMap<AppState> = {
     pacient_data: fromPACIENT_DATA.pacientDataReducer,
     pacient: fromPACIENT.pacientReducer,
     auth: fromAUTH.authReducer,
-    dialog: fromDIALOG.dialogReducer
+    dialog: fromDIALOG.dialogReducer,
+    calendar:fromCALENDAR.calendarReducer
 };
 
 //SELECTORS
@@ -78,6 +84,10 @@ export const getMiembroError = createSelector(getMiembroState, fromMIEMBRO.getMi
 export const getTurnosState = createFeatureSelector<fromTURNOS.TurnosState>('turnos');
 export const getTurnos = createSelector(getTurnosState, fromTURNOS.getTurnosSelector);
 export const getTurnosError = createSelector(getTurnosState, fromTURNOS.getTurnosErrorSelector);
+//Turnos Data Selector
+export const turnosDataFeature = (state:AppState) => state.turnos_data;
+export const getShowTurnosData = createSelector(turnosDataFeature, (state:fromTURNOS_DATA.TurnosDataState) => state.show);
+export const getEspecialistId = createSelector(turnosDataFeature, (state:fromTURNOS_DATA.TurnosDataState) => state.pacientId );  
 //Table selectors
 export const getTableState = createFeatureSelector<fromTABLE.TableState>('table');
 export const openTable = createSelector(getTableState, fromTABLE.openTableSelector);
@@ -119,3 +129,6 @@ export  const getIsAuth = createSelector(authFeature, (state:fromAUTH.AuthState)
 //Dialog Selector
 export const dialogFeature = (state:AppState) => state.dialog;
 export const getCloseDialog = createSelector(dialogFeature, (state:fromDIALOG.DialogState) => state.close);
+//Calendar Selector
+export const calendarFeature = (state:AppState) => state.calendar;
+export const getShowCalendar = createSelector(calendarFeature, (state:fromCALENDAR.CalendarState) => state.show);

@@ -11,8 +11,8 @@ import { TurnosDialogComponent } from './turnos-dialog/turnos-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { LOCALE_ID } from '@angular/core';
 import localeEsAr from '@angular/common/locales/es-AR';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { ScrollableDirective } from '../../../directives/scrollable.directive';
 import { AccordionComponent } from './acordion/accordion.component';
 import { PacientListComponent } from './acordion/pacient-list/pacient-list.component';
@@ -20,16 +20,19 @@ import { PacientTableComponent } from './pacient-data/pacient-table/pacient-tabl
 import { PacientDataComponent } from './pacient-data/pacient-data.component';
 import { PacientInfoComponent } from './pacient-data/pacient-info/pacient-info.component';
 import { PacientdataDialogComponent } from './pacient-data/pacient-info/pacientdata-dialog/pacientdata-dialog.component';
-
+import '@angular/localize/init';
+import { TurnosTabsComponent } from './turnos-tabs/turnos-tabs.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 registerLocaleData(localeEsAr, 'es-Ar');
 
 
 @NgModule({
   declarations: [
-    TurnosComponent, 
-    EspecialistasListComponent, 
-    TurnosTableComponent, 
-    DateAppoimentPipe, 
+    TurnosComponent,
+    EspecialistasListComponent,
+    TurnosTableComponent,
+    DateAppoimentPipe,
     TurnosDialogComponent,
     ScrollableDirective,
     AccordionComponent,
@@ -38,20 +41,24 @@ registerLocaleData(localeEsAr, 'es-Ar');
     PacientDataComponent,
     PacientInfoComponent,
     PacientdataDialogComponent,
+    TurnosTabsComponent,
+    CalendarComponent,
   ],
   imports: [
     CommonModule,
     TurnosRoutingModule,
     MaterialModule,
     FormsModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    FullCalendarModule
   ],
-  exports: [MaterialModule, FormsModule, MatMomentDateModule, ScrollableDirective],
-  entryComponents: [TurnosDialogComponent, PacientdataDialogComponent],
-  providers: [ 
-    { provide: LOCALE_ID, useValue: 'es-AR' } ,
-    { provide: MAT_DATE_LOCALE, useValue: 'es-AR'  },
-    {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}}
-]
+  exports: [MaterialModule, FormsModule, MatMomentDateModule, ScrollableDirective, FullCalendarModule],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-AR' },
+    // { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
+    // { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+  ]
 })
 export class TurnosModule { }

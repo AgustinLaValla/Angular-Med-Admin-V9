@@ -1,3 +1,7 @@
+<div *ngIf="loading" class="spinner-container">
+    <mat-spinner></mat-spinner>
+</div>
+
 <div *ngIf="!loading" class="container  animated fadeIn">
     <button class="fab_btn" mat-fab matTooltip="Agregar Especialidad" style="background-color: #6a0080;">
         <mat-icon>add</mat-icon>
@@ -23,8 +27,4 @@
     <mat-card *ngIf="(especialidades && especialidades.length == 0) || !especialidades" id="alert-card" class="mat-elevation-z8 animated fadeIn">
         Aún no se han agreado especialidades.
     </mat-card>
-</div>
-
-<div *ngIf="loading" class="spinner-container">
-    <mat-spinner></mat-spinner>
 </div>

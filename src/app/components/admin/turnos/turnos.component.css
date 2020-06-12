@@ -6,4 +6,6 @@
     grid-column-gap: 10px;
     grid-row-gap: 15px;
     justify-content: center;
+
+    /* overflow-y: hidden; */
 }

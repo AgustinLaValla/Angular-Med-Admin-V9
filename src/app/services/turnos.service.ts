@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
 import { activateLoading, loadIncrementCounter, loadCloseDialog, deactivateLoading } from '../store/actions';
 import * as firebase from 'firebase';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 import { Counter } from '../interfaces/counter.interface';
 import Swal from 'sweetalert2';
 import { PacientsService } from './pacients.service';

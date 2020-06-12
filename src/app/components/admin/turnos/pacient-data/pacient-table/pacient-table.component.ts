@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Pacient } from 'src/app/interfaces/pacient.interface';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState, getIsLoading, getPacienteTurnos } from 'src/app/store/app.reducer';
 import { Turno } from 'src/app/interfaces/turno.interface';
 import { deactivateLoading, loadDeleteTurnoFromPacientSection } from 'src/app/store/actions';
 import { TurnosDialogComponent } from '../../turnos-dialog/turnos-dialog.component';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 import Swal from 'sweetalert2';
 
 @Component({

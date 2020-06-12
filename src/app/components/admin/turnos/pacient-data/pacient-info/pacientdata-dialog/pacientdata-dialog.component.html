@@ -32,10 +32,10 @@
             <input matInput [matDatepicker]="nacimientoPicker" [max]="maxDate" name="nacimiento" [(ngModel)]="nacimiento" (dateChange)="checkFechaDeNacimiento()">
             <mat-datepicker-toggle matSuffix [for]="nacimientoPicker"></mat-datepicker-toggle>
             <mat-datepicker #nacimientoPicker 
-                             ouchUi 
+                             touchUi 
                              startView="multi-year"
                              (yearSelected)="chosenYearHandler($event)"
-                             (monthSelected)="chosenMonthHandler($event, nacimientoPicker)"  
+                             (monthSelected)="chosenMonthHandler($event)"  
 
                              >
             </mat-datepicker>

@@ -21,7 +21,7 @@ import { appReducer } from './store/app.reducer';
 import { effectsArray } from './store/effects';
 import { HttpClientModule } from '@angular/common/http';
 
-
+import '@angular/localize/init';
 @NgModule({
   declarations: [
     AppComponent,

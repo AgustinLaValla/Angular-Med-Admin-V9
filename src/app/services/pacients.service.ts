@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
 import { loadDeleteSingleTurno, loadUpdateSingleTurno, activateLoading, loadUpdateSinglePacientInfoSuccess } from '../store/actions';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 import Swal from 'sweetalert2';
 import * as firebase from 'firebase';
 import { PacientCounter } from '../interfaces/counter.interface';

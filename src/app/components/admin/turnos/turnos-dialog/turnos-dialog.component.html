@@ -31,7 +31,7 @@
                             touchUi 
                             startView="multi-year"
                             (yearSelected)="chosenYearHandler($event)"
-                            (monthSelected)="chosenMonthHandler($event, nacimientoPicker)"  
+                            (monthSelected)="chosenMonthHandler($event)"  
                             panelClass="example-month-picker"
                             ></mat-datepicker>
             <mat-error>Este campo es obligatorio</mat-error>
@@ -60,7 +60,7 @@
 
         <mat-form-field>
             <mat-label>Consulta</mat-label>
-            <mat-select [(ngModel)]="new_turno.consulta" required #servicio="ngModel">
+            <mat-select [(ngModel)]="new_turno.consulta" name="consulta" required #servicio="ngModel">
                 <mat-option *ngFor="let servicio of servicios" [value]="servicio">{{ servicio }}</mat-option>
             </mat-select>
             <mat-error *ngIf="servicio.hasError('required')">Este campo es obligatorio</mat-error>
@@ -68,7 +68,7 @@
 
         <mat-form-field *ngIf="miembro">
             <mat-label>Mutual</mat-label>
-            <mat-select [(ngModel)]="new_turno.obra_social" required>
+            <mat-select [(ngModel)]="new_turno.obra_social" name="obra_social" required>
                 <mat-option *ngFor="let mutual of miembro.mutuales_adheridas" [value]="mutual">{{ mutual }}</mat-option>
             </mat-select>
             <mat-error>Este campo es obligatorio</mat-error>

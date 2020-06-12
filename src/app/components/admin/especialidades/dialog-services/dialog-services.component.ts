@@ -32,7 +32,7 @@ export class DialogServicesComponent implements OnInit, OnDestroy {
   private especialidadSubs$ = new Subscription();
 
   constructor(public dialogRef: MatDialogRef<DialogServicesComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: { message: 'string', id:'string'},
+              @Inject(MAT_DIALOG_DATA) public data: { message: string, id:string},
               private store: Store<AppState>,
               private matIconRegistry: MatIconRegistry,
               private domSanatizer: DomSanitizer) { 

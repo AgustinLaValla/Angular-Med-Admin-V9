@@ -1,24 +1,4 @@
 <div class="animated fadeIn">
-
-    <div  class="btn_group">
-        <button *ngIf="tableType == 'Especialistas'"  
-                 (click)="openDialog('Agregar Turno')" 
-                 class="add_member_btn" 
-                 mat-raised-button>
-                <mat-icon>add</mat-icon>
-                Agregar Turno
-        </button>
-    
-        <button mat-raised-button 
-                color="warn" 
-                class="close_btn" 
-                (click)="closeTalbe()"
-                matTooltip="Close Table"
-        >       <mat-icon>close</mat-icon>
-        </button>
-    </div>
-
-
     <mat-form-field *ngIf="turnos.length > 0" style="width: 90%;">
         <mat-label>Filtrar por Apellido</mat-label>
         <input matInput (keyup)="applyFilter($event)"  style="width: 100%;">
@@ -94,7 +74,11 @@
                     >
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button (click)="deleteTurno(element)" mat-icon-button matTooltip="borrar turno" color="warn">
+                    <button (click)="deleteTurno(element)" 
+                            mat-icon-button matTooltip="borrar turno" 
+                            color="warn"
+                            [disabled]="tableType == 'Turnos Pasados'"                    
+                    >
                         <mat-icon>delete</mat-icon>
                     </button>
                 </td>

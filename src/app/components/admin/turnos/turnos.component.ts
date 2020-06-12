@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AppState, openTable, getPacientData } from 'src/app/store/app.reducer';
-import { loadCloseTable, hidePacientData, loadResetEspecialidad } from 'src/app/store/actions';
+import { AppState, openTable, getPacientData, getShowTurnosData, getTableType } from 'src/app/store/app.reducer';
+import {  hidePacientData, loadResetEspecialidad, HideTurnosData } from 'src/app/store/actions';
 
 @Component({
   selector: 'app-turnos',
@@ -11,40 +11,63 @@ import { loadCloseTable, hidePacientData, loadResetEspecialidad } from 'src/app/
 })
 export class TurnosComponent implements OnInit, OnDestroy {
 
-  private openTableSubs$ = new Subscription();
-  public openTable: boolean = false;
-
   private showPacientDataSubs$ = new Subscription();
-  public showPacientData:boolean;
-  
+  public showPacientData: boolean;
+
+  private showTurnosDataSubs$ = new Subscription();
+  public showTurnosData: boolean = false;
+
+  private openTableSubs$ = new Subscription();
+  public isOpen:boolean = false;
+
+  private tableTypeSubs$ = new Subscription();
+  public tableType:'Especialistas' | 'Turnos Pasados';
 
   constructor(private store: Store<AppState>) {
 
-    //SUBSCRIPTIONS
-    this.openTableSubs$ = this.store.select(openTable).subscribe((open: boolean) => {
-      this.openTable = open;
-      if(open) { 
-        this.store.dispatch( hidePacientData() );
+    this.showTurnosDataSelectorsSubscription();
+    this.showPacientDataSubscription();
+    this.getTableData();
+    
+  };
 
-      }
+  ngOnInit() {  }
+
+
+  showTurnosDataSelectorsSubscription() {
+    this.showTurnosDataSubs$ = this.store.select(getShowTurnosData).subscribe(show => {
+      this.showTurnosData = show;
+      if (show) {
+        this.store.dispatch(hidePacientData());
+      };
     });
+  };
+
+  showPacientDataSubscription() {
 
     this.showPacientDataSubs$ = this.store.select(getPacientData).subscribe((show) => {
       this.showPacientData = show;
-      if(show){
-        this.store.dispatch( loadCloseTable() );
-
+      if (show) {
+        this.store.dispatch(HideTurnosData());
       }
     });
+  };
 
-  }
-
-  ngOnInit() {
+  getTableData() { 
+    this.openTableSubs$ = this.store.select(openTable).subscribe(isOpen => this.isOpen = isOpen);
+    this.tableTypeSubs$ = this.store.select(getTableType).subscribe(tableType => {
+      this.tableType = tableType;
+      if(tableType === 'Turnos Pasados') { 
+        this.store.dispatch( hidePacientData() );
+      };
+    });
   }
 
   ngOnDestroy(): void {
-    this.openTableSubs$.unsubscribe();
+    this.showTurnosDataSubs$.unsubscribe();
     this.showPacientDataSubs$.unsubscribe();
-    this.store.dispatch( loadResetEspecialidad() );
-  }
-}
+    this.openTableSubs$.unsubscribe();
+    this.tableTypeSubs$.unsubscribe();
+    this.store.dispatch(loadResetEspecialidad());
+  };
+};

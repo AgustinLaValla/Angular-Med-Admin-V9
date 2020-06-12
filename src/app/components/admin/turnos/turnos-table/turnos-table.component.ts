@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef, AfterViewChecked, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Turno } from 'src/app/interfaces/turno.interface';
 import { Store } from '@ngrx/store';
@@ -12,7 +11,6 @@ import {
   loadResetTurnoList,
   loadGetTurnosPasados,
   loadGetMiembro,
-  unsubscribeLoading
 } from 'src/app/store/actions';
 import { TurnosDialogComponent } from '../turnos-dialog/turnos-dialog.component';
 import Swal from 'sweetalert2';
@@ -71,40 +69,21 @@ export class TurnosTableComponent implements OnInit, OnDestroy {
     this.tableTypeSubs$ = this.store.select(getTableType).subscribe((tableTyle) => {
       if (tableTyle) {
         this.tableType = tableTyle;
-
-        //Turnos concretados length
-        this.turnosConcretadosLengthSubs$ = this.store.select(getTurnosConcretadosLength).subscribe((turnosConcretadosLength) => {
-          console.log(turnosConcretadosLength)
-          if (turnosConcretadosLength >= 0) {
-            this.turnosConcretadosLength = turnosConcretadosLength;
-          }
-        })
-
-
-        //Turnos Counter
-        this.turnosCounterSubs$ = this.store.select(getTurnosCounter).subscribe((totalTurnos: number) => {
-          if (totalTurnos && this.tableType == 'Especialistas') {
-            this.totalTurnos = totalTurnos - this.turnosConcretadosLength;
-          } else if (totalTurnos && this.tableType == 'Turnos Pasados') {
-            this.totalTurnos = this.turnosConcretadosLength;
-          }
-        })
-      }
+        this.getConcretizedTurnosLength();
+        this.getTurnosCounter();
+      };
     });
 
-    //counter subscription
     this.counterSubs$ = this.store.select(getCounter).subscribe((counter: number) => this.counter = counter);
-    //Especialista Id Subscription
-    this.idSubs$ = this.store.select(getId).subscribe((id: string) => {
+    this.getEspecialistaIdAndDispatchTurnosAction();
+    this.getTurnos();
+    this.miembroSubs$ = this.store.select(getMiembro).subscribe((miembro: Miembro) => this.miembro = miembro);
+    this.loadingSubscriptionHandler();
+  };
 
-      if (id && this.tableType == 'Especialistas') {
-        this.store.dispatch(loadGetTurnos({ id: id, counter: this.counter }));
-      } else if (id && this.tableType == 'Turnos Pasados') {
-        this.store.dispatch(loadGetTurnosPasados({ especialistaId: id, counter: this.counter }));
-      };
-      this.especialistaId = id;
-    })
+  ngOnInit() { }
 
+  getTurnos() {
     this.turnosSubs$ = this.store.select(getTurnos).subscribe((turnos: Turno[]) => {
       this.store.dispatch(deactivateLoading());
       if (turnos) {
@@ -120,25 +99,48 @@ export class TurnosTableComponent implements OnInit, OnDestroy {
       };
 
     });
+  };
 
-
-    //Miembro Subscription
-    this.miembroSubs$ = this.store.select(getMiembro).subscribe((miembro: Miembro) => {
-      this.miembro = miembro;
+  getConcretizedTurnosLength() {
+    this.turnosConcretadosLengthSubs$ = this.store.select(getTurnosConcretadosLength).subscribe((turnosConcretadosLength) => {
+      console.log(turnosConcretadosLength)
+      if (turnosConcretadosLength >= 0) {
+        this.turnosConcretadosLength = turnosConcretadosLength;
+      };
     });
+  };
 
-    //Loading Subs
+  getTurnosCounter() {
+    this.turnosCounterSubs$ = this.store.select(getTurnosCounter).subscribe((totalTurnos: number) => {
+      if (totalTurnos && this.tableType == 'Especialistas') {
+        this.totalTurnos = totalTurnos - this.turnosConcretadosLength;
+      } else if (totalTurnos && this.tableType == 'Turnos Pasados') {
+        this.totalTurnos = this.turnosConcretadosLength;
+      };
+    });
+  };
+
+  getEspecialistaIdAndDispatchTurnosAction() {
+    this.idSubs$ = this.store.select(getId).subscribe((id: string) => {
+
+      if (id && this.tableType == 'Especialistas') {
+        this.store.dispatch(loadGetTurnos({ id: id, counter: this.counter }));
+      } else if (id && this.tableType == 'Turnos Pasados') {
+        this.store.dispatch(loadGetTurnosPasados({ especialistaId: id, counter: this.counter }));
+      };
+      this.especialistaId = id;
+    });
+  };
+
+  loadingSubscriptionHandler() {
     this.loadingSubsHandler$ = this.store.select(getUnsubsLoading).subscribe(unsubscribe => {
       if (unsubscribe) {
         this.loadingSubs$.unsubscribe()
       } else {
         this.getLoadingSubs();
-      }
-    })
-
+      };
+    });
   }
-
-  ngOnInit() { }
 
   openDialog(action: string, turno: Turno = null) {
     this.dialog.open(TurnosDialogComponent, {
@@ -171,8 +173,30 @@ export class TurnosTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteTurno(turno: Turno) {
-    Swal.fire({
+  async deleteTurno(turno: Turno) {
+    // Swal.fire({
+    //   title: '¿Seguro quieres borrar el turno?',
+    //   text: "¡Los datos eliminados no se pueden recuperar! ",
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#e91e63',
+    //   cancelButtonColor: '#6a0080',
+    //   confirmButtonText: '¡SÍ, QUIERO BORRARLO!',
+    //   cancelButtonText: 'CANCELAR'
+    // }).then((result) => {
+    //   if (result.value) {
+    //     this.store.dispatch(loadDeleteSingleTurno({
+    //       especialistaId: this.especialistaId,
+    //       turno: turno
+    //     }));
+    //     Swal.fire(
+    //       'Turno eliminado ;)',
+    //       'El turno ha sido eliminado de la lista',
+    //       'success'
+    //     )
+    //   }
+    // });
+    const result = await Swal.fire({
       title: '¿Seguro quieres borrar el turno?',
       text: "¡Los datos eliminados no se pueden recuperar! ",
       icon: 'warning',
@@ -181,19 +205,19 @@ export class TurnosTableComponent implements OnInit, OnDestroy {
       cancelButtonColor: '#6a0080',
       confirmButtonText: '¡SÍ, QUIERO BORRARLO!',
       cancelButtonText: 'CANCELAR'
-    }).then((result) => {
-      if (result.value) {
-        this.store.dispatch(loadDeleteSingleTurno({
-          especialistaId: this.especialistaId,
-          turno: turno
-        }));
-        Swal.fire(
-          'Turno eliminado ;)',
-          'El turno ha sido eliminado de la lista',
-          'success'
-        )
-      }
-    })
+    });
+    if (result.value) {
+      await this.store.dispatch(loadDeleteSingleTurno({
+        especialistaId: this.especialistaId,
+        turno: turno
+      }));
+      Swal.fire(
+        'Turno eliminado ;)',
+        'El turno ha sido eliminado de la lista',
+        'success'
+      );
+      await this.getEspecialistaIdAndDispatchTurnosAction();
+    }
   }
 
 
@@ -221,9 +245,6 @@ export class TurnosTableComponent implements OnInit, OnDestroy {
 
   }
 
-  closeTalbe() {
-    this.store.dispatch(loadCloseTable())
-  }
 
   ngOnDestroy(): void {
     this.turnosSubs$.unsubscribe();

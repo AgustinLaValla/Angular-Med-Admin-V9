@@ -4,7 +4,8 @@ import { Pacient } from 'src/app/interfaces/pacient.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
 import { loadUpdateSinglePacientInfo, hidePacientData, loadResetPacientStoreData } from 'src/app/store/actions';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-pacientdata-dialog',
@@ -21,7 +22,10 @@ export class PacientdataDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<PacientdataDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { pacientInfo: Pacient },
-    private store: Store<AppState>) { }
+    private store: Store<AppState>,
+    private dateAdapter: DateAdapter<any>) {
+    this.dateAdapter.setLocale('es');
+  }
 
   ngOnInit() {
     const { pacientInfo } = this.data;
@@ -49,17 +53,17 @@ export class PacientdataDialogComponent implements OnInit {
         oldPacientData: this.pacientBackUp,
         newPacientData: this.pacient
       }));
-      this.store.dispatch( loadResetPacientStoreData() );
+      this.store.dispatch(loadResetPacientStoreData());
       this.store.dispatch(hidePacientData());
-      
+
     }
     this.dialogRef.close();
   }
 
-  checkFechaDeNacimiento(){ 
+  checkFechaDeNacimiento() {
     const { pacientInfo } = this.data;
     console.log(moment(this.nacimiento).utc().unix() == pacientInfo.nacimiento_seconds)
-    if(moment(this.nacimiento).utc().unix() != pacientInfo.nacimiento_seconds) {
+    if (moment(this.nacimiento).utc().unix() != pacientInfo.nacimiento_seconds) {
       this.pacient.nacimiento = this.nacimiento.toString();
       this.pacient.nacimiento_seconds = moment(this.nacimiento).clone().unix();
     }

@@ -1,4 +1,4 @@
-<div *ngIf=" (data.message == 'Editar Servicios' || data.message == 'Ver Servicios') && !loading ">
+<div *ngIf=" (data.message === 'Editar Servicios' || data.message === 'Ver Servicios') && !loading ">
     <mat-list>
         <h3 mat-dialog-title>{{ data.message }}</h3>
 
@@ -41,7 +41,7 @@
                           >
                 </mat-form-field>
 
-                <button *ngIf="data.message == 'Editar Servicios' " 
+                <button *ngIf="data.message === 'Editar Servicios' " 
                         (click)="editServicio(i)" 
                          mat-raised-button
                          color="accent" 
@@ -49,7 +49,7 @@
                     <mat-icon matTooltip="Editar Servicio">edit</mat-icon>
                 </button>
                 &nbsp;&nbsp;
-                <button *ngIf="data.message == 'Editar Servicios' " 
+                <button *ngIf="data.message === 'Editar Servicios' " 
                          (click)="deleteServicio(i)" 
                          mat-raised-button
                          color="warn" 
@@ -70,7 +70,7 @@
     </mat-list>
 </div>
 
-<div *ngIf="data.message == 'Agregar Especialidad' && !loading ">
+<div *ngIf="data.message === 'Agregar Especialidad' && !loading ">
 
     <h3>{{ data.message }}</h3>
 
